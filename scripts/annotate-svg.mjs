@@ -26,7 +26,16 @@ let animated = source.replace(/<path\b[^>]*>/g, (tag) => {
   return tag;
 });
 
-const styles = `<style>
+const styles = `<defs>
+  <!-- 노이즈 맵의 밝기 차이로 원본 픽셀 위치를 조금씩 뒤틀어 스퀴글 효과를 만듭니다. -->
+  <filter id="squiggle-filter" x="-4%" y="-4%" width="108%" height="108%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="1" result="noise">
+      <!-- seed를 계단식으로 바꿔 손으로 매 프레임 다시 그린 듯한 떨림을 냅니다. -->
+      <animate attributeName="seed" values="1;2;3;4;5;6;1" dur="0.72s" calcMode="discrete" repeatCount="indefinite" />
+    </feTurbulence>
+    <feDisplacementMap id="squiggle-displacement" in="SourceGraphic" in2="noise" scale="3.5" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+</defs><style>
   /* 원본 SVG 내부의 별 path 자체를 확대·회전·발광시킵니다. */
   .native-spark { transform-box: fill-box; transform-origin: center; animation: nativeSparkle 2.2s ease-in-out infinite; filter: drop-shadow(0 0 5px #b784ff); }
   #native-spark-center { animation-delay: .65s; }
@@ -39,5 +48,8 @@ const styles = `<style>
 </style>`;
 
 animated = animated.replace(/(<svg\b[^>]*>)/, `$1${styles}`);
+// 8,256개 path 전체를 한 그룹으로 감싸 필터 하나로 원본 그림 전체를 변형합니다.
+animated = animated.replace("<path", '<g id="native-artwork" filter="url(#squiggle-filter)"><path');
+animated = animated.replace("</svg>", "</g></svg>");
 writeFileSync(outputPath, animated);
 console.log(`원본 path ${pathIndex + 1}개 중 별 ${stars.size}개, 종잇조각 ${papers.size}개에 ID를 추가했습니다.`);

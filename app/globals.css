@@ -17,3 +17,4 @@ header{height:76px;padding:0 clamp(24px,5vw,76px);display:flex;align-items:cente
 
 /* object로 불러와야 SVG 내부의 원본 path와 ID를 유지하면서 직접 제어할 수 있습니다. */
 .native-artwork object{display:block;width:100%;height:100%;border:0}.native-badge{position:absolute;left:14px;bottom:14px;padding:7px 10px;border:1px solid #a77cff4d;background:#09070dd9;color:#aaa3b4;font:8px var(--font-geist-mono),monospace;letter-spacing:.12em;pointer-events:none}.native-badge i{display:inline-block;width:5px;height:5px;margin-right:7px;border-radius:50%;background:#9d6cff;box-shadow:0 0 8px #9d6cff}
+.strength-control{display:block;max-width:260px;margin-top:17px;color:#8d8698;font:9px var(--font-geist-mono),monospace;letter-spacing:.1em}.strength-control span{display:flex;justify-content:space-between;margin-bottom:9px}.strength-control b{color:#c3b3e8;font-weight:400}.strength-control input{width:100%;accent-color:#9d6cff;cursor:pointer}
